@@ -1074,12 +1074,12 @@ class DbtGraph:
         if self.should_use_yaml_selectors_cache():
             cache_dict = self.get_yaml_selectors_cache()
 
-            if not cache_dict:
+            if not cache_dict or "yaml_selectors" not in cache_dict:
                 logger.info(f"Cosmos performance: Cache miss for {self.cache_key}")
 
                 return self.parse_yaml_selectors(selector_definitions)
 
-            cache_version: str = cache_dict["version"]
+            cache_version: str = cache_dict.get("version", "")
             yaml_selectors: YamlSelectors = cache_dict["yaml_selectors"]
 
             current_version = cache._calculate_yaml_selectors_cache_current_version(
